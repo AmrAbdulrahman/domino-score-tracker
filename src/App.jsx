@@ -2,6 +2,7 @@ import { useCallback, useState } from 'react'
 import SetupScreen from './components/SetupScreen'
 import GameScreen from './components/GameScreen'
 import GameHistoryScreen from './components/GameHistoryScreen'
+import InstallAppButton from './components/InstallAppButton'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
 import { adjustScore, createHistoryEntry, createInitialState, startGame } from './lib/gameLogic'
 
@@ -32,14 +33,23 @@ export default function App() {
     setState(createInitialState())
   }, [state, setState, setGameHistory])
 
+  let screen
   if (showHistory) {
-    return <GameHistoryScreen games={gameHistory} onBack={() => setShowHistory(false)} />
-  }
-
-  if (state.status === 'setup') {
-    return (
+    screen = <GameHistoryScreen games={gameHistory} onBack={() => setShowHistory(false)} />
+  } else if (state.status === 'setup') {
+    screen = (
       <SetupScreen
         onStart={handleStart}
+        onShowHistory={() => setShowHistory(true)}
+        historyCount={gameHistory.length}
+      />
+    )
+  } else {
+    screen = (
+      <GameScreen
+        state={state}
+        onAdjustScore={handleAdjustScore}
+        onNewGame={handleNewGame}
         onShowHistory={() => setShowHistory(true)}
         historyCount={gameHistory.length}
       />
@@ -47,12 +57,9 @@ export default function App() {
   }
 
   return (
-    <GameScreen
-      state={state}
-      onAdjustScore={handleAdjustScore}
-      onNewGame={handleNewGame}
-      onShowHistory={() => setShowHistory(true)}
-      historyCount={gameHistory.length}
-    />
+    <>
+      {screen}
+      <InstallAppButton />
+    </>
   )
 }
