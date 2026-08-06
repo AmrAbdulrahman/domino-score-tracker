@@ -8,6 +8,7 @@ export function createInitialState() {
     goal: null,
     winnerId: null,
     players: [],
+    archived: false,
   }
 }
 
@@ -16,6 +17,7 @@ export function startGame(names, goal) {
     status: 'playing',
     goal,
     winnerId: null,
+    archived: false,
     players: names.map((name, index) => ({
       id: `p${index}-${Date.now()}`,
       name,

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import SetupScreen from './components/SetupScreen'
 import GameScreen from './components/GameScreen'
 import GameHistoryScreen from './components/GameHistoryScreen'
@@ -56,11 +56,25 @@ export default function App() {
   const handleNewGame = useCallback(() => {
     if (!window.confirm('Start a new game? This will clear the current scores.')) return
 
-    if (state.players.length > 0) {
+    if (state.players.length > 0 && !state.archived) {
       setGameHistory((log) => [createHistoryEntry(state), ...log])
     }
     setState(createInitialState())
   }, [state, setState, setGameHistory])
+
+  const hasArchivedFinishedGameRef = useRef(false)
+
+  useEffect(() => {
+    if (state.status !== 'finished') {
+      hasArchivedFinishedGameRef.current = false
+      return
+    }
+    if (state.archived || hasArchivedFinishedGameRef.current) return
+
+    hasArchivedFinishedGameRef.current = true
+    setGameHistory((log) => [createHistoryEntry(state), ...log])
+    setState((prev) => (prev.status === 'finished' ? { ...prev, archived: true } : prev))
+  }, [state, setGameHistory, setState])
 
   useEffect(() => {
     const encoded = new URLSearchParams(window.location.search).get(SHARE_PARAM)
@@ -81,7 +95,7 @@ export default function App() {
         cleanUrl()
         return
       }
-      if (state.players.length > 0) {
+      if (state.players.length > 0 && !state.archived) {
         setGameHistory((log) => [createHistoryEntry(state), ...log])
       }
     }
