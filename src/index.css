@@ -346,44 +346,85 @@ input[type='number']:focus {
   color: var(--danger);
 }
 
-/* Round form */
-
-.round-form-rows {
-  display: grid;
-  gap: 14px;
-  margin-bottom: 18px;
+.history-table .positive {
+  color: var(--accent);
 }
 
-.round-form-row {
-  display: grid;
-  grid-template-columns: minmax(80px, 1fr) 100px 100px;
-  align-items: end;
-  gap: 10px;
-}
+/* Score controls */
 
-.round-form-name {
-  font-weight: 600;
-  overflow-wrap: anywhere;
-  padding-bottom: 10px;
-}
-
-.round-form-field {
+.score-controls {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
-@media (max-width: 480px) {
-  .round-form-row {
-    grid-template-columns: 1fr 1fr;
-  }
+.btn-adjust {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface-muted);
+  font-size: 1.3rem;
+  line-height: 1;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
 
-  .round-form-name {
-    grid-column: 1 / -1;
-    padding-bottom: 0;
-  }
+.btn-adjust:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.btn-plus {
+  color: var(--accent);
+}
+
+.btn-plus:not(:disabled):hover,
+.btn-plus[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-color: var(--accent);
+}
+
+.btn-minus {
+  color: var(--danger);
+}
+
+.btn-minus:not(:disabled):hover,
+.btn-minus[aria-pressed='true'] {
+  background: var(--danger);
+  color: var(--accent-contrast);
+  border-color: var(--danger);
+}
+
+.picker {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.picker-option {
+  padding: 10px 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-muted);
+  color: var(--text);
+  font-weight: 700;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.picker-add .picker-option:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+
+.picker-subtract .picker-option:hover {
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--accent-contrast);
 }

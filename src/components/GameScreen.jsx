@@ -1,8 +1,7 @@
 import PlayerCard from './PlayerCard'
-import RoundForm from './RoundForm'
 
-export default function GameScreen({ state, onSubmitRound, onNewGame }) {
-  const { players, goal, round, status, winnerId } = state
+export default function GameScreen({ state, onAdjustScore, onNewGame }) {
+  const { players, goal, status, winnerId } = state
   const winner = players.find((p) => p.id === winnerId)
   const leaderTotal = Math.max(...players.map((p) => p.total))
 
@@ -32,13 +31,11 @@ export default function GameScreen({ state, onSubmitRound, onNewGame }) {
             goal={goal}
             isWinner={player.id === winnerId}
             isLeader={player.total === leaderTotal && leaderTotal > 0}
+            disabled={status === 'finished'}
+            onAdjust={(delta) => onAdjustScore(player.id, delta)}
           />
         ))}
       </div>
-
-      {status === 'playing' && (
-        <RoundForm players={players} round={round} onSubmit={onSubmitRound} />
-      )}
     </div>
   )
 }

@@ -1,8 +1,19 @@
 import { useState } from 'react'
+import { PIP_VALUES } from '../lib/gameLogic'
 
-export default function PlayerCard({ player, goal, isWinner, isLeader }) {
+export default function PlayerCard({ player, goal, isWinner, isLeader, disabled, onAdjust }) {
   const [showHistory, setShowHistory] = useState(false)
+  const [picker, setPicker] = useState(null) // null | 'add' | 'subtract'
   const progress = Math.min(100, Math.round((player.total / goal) * 100))
+
+  function togglePicker(mode) {
+    setPicker((current) => (current === mode ? null : mode))
+  }
+
+  function choosePipValue(value) {
+    onAdjust(picker === 'subtract' ? -value : value)
+    setPicker(null)
+  }
 
   return (
     <div className={`player-card ${isWinner ? 'is-winner' : ''}`}>
@@ -24,6 +35,44 @@ export default function PlayerCard({ player, goal, isWinner, isLeader }) {
         {player.total} / {goal} points
       </div>
 
+      <div className="score-controls">
+        <button
+          type="button"
+          className="btn-adjust btn-minus"
+          aria-label={`Subtract points from ${player.name}`}
+          aria-pressed={picker === 'subtract'}
+          onClick={() => togglePicker('subtract')}
+          disabled={disabled}
+        >
+          −
+        </button>
+        <button
+          type="button"
+          className="btn-adjust btn-plus"
+          aria-label={`Add points to ${player.name}`}
+          aria-pressed={picker === 'add'}
+          onClick={() => togglePicker('add')}
+          disabled={disabled}
+        >
+          +
+        </button>
+      </div>
+
+      {picker && (
+        <div className={`picker picker-${picker}`}>
+          {PIP_VALUES.map((value) => (
+            <button
+              key={value}
+              type="button"
+              className="picker-option"
+              onClick={() => choosePipValue(value)}
+            >
+              {value}
+            </button>
+          ))}
+        </div>
+      )}
+
       <button
         type="button"
         className="btn-link history-toggle"
@@ -38,21 +87,17 @@ export default function PlayerCard({ player, goal, isWinner, isLeader }) {
         <table className="history-table">
           <thead>
             <tr>
-              <th>Round</th>
-              <th>+Points</th>
-              <th>-Discount</th>
-              <th>Net</th>
+              <th>#</th>
+              <th>Change</th>
               <th>Total</th>
             </tr>
           </thead>
           <tbody>
-            {player.history.map((entry) => (
-              <tr key={entry.round}>
-                <td>{entry.round}</td>
-                <td>{entry.points}</td>
-                <td>{entry.discount}</td>
-                <td className={entry.net < 0 ? 'negative' : ''}>
-                  {entry.net > 0 ? `+${entry.net}` : entry.net}
+            {player.history.map((entry, index) => (
+              <tr key={index}>
+                <td>{index + 1}</td>
+                <td className={entry.delta < 0 ? 'negative' : 'positive'}>
+                  {entry.delta > 0 ? `+${entry.delta}` : entry.delta}
                 </td>
                 <td>{entry.total}</td>
               </tr>

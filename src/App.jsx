@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import SetupScreen from './components/SetupScreen'
 import GameScreen from './components/GameScreen'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
-import { createInitialState, startGame, submitRound } from './lib/gameLogic'
+import { adjustScore, createInitialState, startGame } from './lib/gameLogic'
 
 const STORAGE_KEY = 'domino-score-tracker/game'
 
@@ -14,8 +14,8 @@ export default function App() {
     [setState],
   )
 
-  const handleSubmitRound = useCallback(
-    (entries) => setState((prev) => submitRound(prev, entries)),
+  const handleAdjustScore = useCallback(
+    (playerId, delta) => setState((prev) => adjustScore(prev, playerId, delta)),
     [setState],
   )
 
@@ -30,6 +30,6 @@ export default function App() {
   }
 
   return (
-    <GameScreen state={state} onSubmitRound={handleSubmitRound} onNewGame={handleNewGame} />
+    <GameScreen state={state} onAdjustScore={handleAdjustScore} onNewGame={handleNewGame} />
   )
 }

@@ -1,11 +1,11 @@
 export const MIN_PLAYERS = 2
 export const MAX_PLAYERS = 4
+export const PIP_VALUES = [1, 2, 3, 4, 5, 6]
 
 export function createInitialState() {
   return {
     status: 'setup',
     goal: null,
-    round: 1,
     winnerId: null,
     players: [],
   }
@@ -15,7 +15,6 @@ export function startGame(names, goal) {
   return {
     status: 'playing',
     goal,
-    round: 1,
     winnerId: null,
     players: names.map((name, index) => ({
       id: `p${index}-${Date.now()}`,
@@ -26,21 +25,15 @@ export function startGame(names, goal) {
   }
 }
 
-export function submitRound(state, entries) {
+export function adjustScore(state, playerId, delta) {
   const players = state.players.map((player) => {
-    const entry = entries[player.id] || {}
-    const points = Number(entry.points) || 0
-    const discount = Number(entry.discount) || 0
-    const net = points - discount
-    const total = player.total + net
+    if (player.id !== playerId) return player
 
+    const total = player.total + delta
     return {
       ...player,
       total,
-      history: [
-        ...player.history,
-        { round: state.round, points, discount, net, total },
-      ],
+      history: [...player.history, { delta, total }],
     }
   })
 
@@ -51,7 +44,6 @@ export function submitRound(state, entries) {
   return {
     ...state,
     players,
-    round: state.round + 1,
     status: winner ? 'finished' : 'playing',
     winnerId: winner ? winner.id : null,
   }
