@@ -1,7 +1,15 @@
 import PlayerCard from './PlayerCard'
 import ShareGameButton from './ShareGameButton'
+import GameMenu from './GameMenu'
 
-export default function GameScreen({ state, onAdjustScore, onNewGame, onShowHistory, historyCount }) {
+export default function GameScreen({
+  state,
+  onAdjustScore,
+  onNewGame,
+  onEndGame,
+  onShowHistory,
+  historyCount,
+}) {
   const { players, goal, status, winnerId } = state
   const winner = players.find((p) => p.id === winnerId)
   const leaderTotal = Math.max(...players.map((p) => p.total))
@@ -14,15 +22,14 @@ export default function GameScreen({ state, onAdjustScore, onNewGame, onShowHist
           <p className="subtitle">Goal: {goal} points</p>
         </div>
         <div className="game-header-actions">
-          {historyCount > 0 && (
-            <button type="button" className="btn-secondary" onClick={onShowHistory}>
-              Game History ({historyCount})
-            </button>
-          )}
           <ShareGameButton state={state} />
-          <button type="button" className="btn-secondary" onClick={onNewGame}>
-            New Game
-          </button>
+          <GameMenu
+            historyCount={historyCount}
+            onShowHistory={onShowHistory}
+            onEndGame={onEndGame}
+            canEndGame={status === 'playing'}
+            onNewGame={onNewGame}
+          />
         </div>
       </header>
 

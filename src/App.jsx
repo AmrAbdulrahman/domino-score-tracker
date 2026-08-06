@@ -6,7 +6,13 @@ import InstallAppButton from './components/InstallAppButton'
 import SoundToggleButton from './components/SoundToggleButton'
 import UpdateAvailableBanner from './components/UpdateAvailableBanner'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
-import { adjustScore, createHistoryEntry, createInitialState, startGame } from './lib/gameLogic'
+import {
+  adjustScore,
+  createHistoryEntry,
+  createInitialState,
+  endGame,
+  startGame,
+} from './lib/gameLogic'
 import { playScoreBeep } from './lib/beep'
 import { SHARE_PARAM, tryDecodeGameState } from './lib/shareGame'
 
@@ -32,6 +38,18 @@ export default function App() {
     },
     [setState, muted],
   )
+
+  const handleEndGame = useCallback(() => {
+    if (state.status !== 'playing') return
+
+    const leader = [...state.players].sort((a, b) => b.total - a.total)[0]
+    const confirmed = window.confirm(
+      `End the game now? ${leader.name} has the highest score (${leader.total}) and will be declared the winner.`,
+    )
+    if (!confirmed) return
+
+    setState((prev) => endGame(prev))
+  }, [state, setState])
 
   const handleNewGame = useCallback(() => {
     if (!window.confirm('Start a new game? This will clear the current scores.')) return
@@ -89,6 +107,7 @@ export default function App() {
         state={state}
         onAdjustScore={handleAdjustScore}
         onNewGame={handleNewGame}
+        onEndGame={handleEndGame}
         onShowHistory={() => setShowHistory(true)}
         historyCount={gameHistory.length}
       />

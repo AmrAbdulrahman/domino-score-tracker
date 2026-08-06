@@ -47,7 +47,7 @@ export default function GameHistoryScreen({ games, onBack }) {
   return (
     <div className="screen">
       <header className="game-header">
-        <h1>Game History</h1>
+        <h1>Games</h1>
         <button type="button" className="btn-secondary" onClick={onBack}>
           Back
         </button>

@@ -49,6 +49,18 @@ export function adjustScore(state, playerId, delta) {
   }
 }
 
+export function endGame(state) {
+  if (state.players.length === 0) return state
+
+  const winner = [...state.players].sort((a, b) => b.total - a.total)[0]
+
+  return {
+    ...state,
+    status: 'finished',
+    winnerId: winner.id,
+  }
+}
+
 export function createHistoryEntry(state) {
   const winner = state.players.find((p) => p.id === state.winnerId)
 

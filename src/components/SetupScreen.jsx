@@ -50,11 +50,9 @@ export default function SetupScreen({ onStart, onShowHistory, historyCount }) {
       <div className="card setup-card">
         <div className="setup-card-header">
           <h1>Domino Score Tracker</h1>
-          {historyCount > 0 && (
-            <button type="button" className="btn-link" onClick={onShowHistory}>
-              Game History ({historyCount})
-            </button>
-          )}
+          <button type="button" className="btn-link" onClick={onShowHistory}>
+            Games{historyCount > 0 ? ` (${historyCount})` : ''}
+          </button>
         </div>
         <p className="subtitle">Set up your players and the goal score to start a game.</p>
 
