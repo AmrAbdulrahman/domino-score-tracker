@@ -1,7 +1,6 @@
 import PlayerCard from './PlayerCard'
 import ShareGameButton from './ShareGameButton'
 import GameMenu from './GameMenu'
-import UpdateCheckButton from './UpdateCheckButton'
 import { describeResult, rankPlayers } from '../lib/ranking'
 
 export default function GameScreen({
@@ -11,9 +10,6 @@ export default function GameScreen({
   onEndGame,
   onShowHistory,
   historyCount,
-  needRefresh,
-  onCheckUpdate,
-  onReloadUpdate,
 }) {
   const { players, goal, status } = state
   const hasScored = players.some((p) => p.total > 0)
@@ -28,7 +24,6 @@ export default function GameScreen({
           <p className="subtitle">Goal: {goal} points</p>
         </div>
         <div className="game-header-actions">
-          <UpdateCheckButton needRefresh={needRefresh} onCheck={onCheckUpdate} onReload={onReloadUpdate} />
           <ShareGameButton state={state} />
           <GameMenu
             historyCount={historyCount}

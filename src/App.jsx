@@ -148,9 +148,6 @@ export default function App() {
         onStart={handleStart}
         onShowHistory={() => setShowHistory(true)}
         historyCount={gameHistory.length}
-        needRefresh={needRefresh}
-        onCheckUpdate={checkForUpdate}
-        onReloadUpdate={reloadForUpdate}
       />
     )
   } else {
@@ -162,9 +159,6 @@ export default function App() {
         onEndGame={handleEndGame}
         onShowHistory={() => setShowHistory(true)}
         historyCount={gameHistory.length}
-        needRefresh={needRefresh}
-        onCheckUpdate={checkForUpdate}
-        onReloadUpdate={reloadForUpdate}
       />
     )
   }

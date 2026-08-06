@@ -106,12 +106,6 @@ h2 {
   margin-bottom: 4px;
 }
 
-.setup-card-header-actions {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
 .field-group {
   border: none;
   margin: 0 0 20px;
