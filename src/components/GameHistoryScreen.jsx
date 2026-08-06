@@ -11,8 +11,22 @@ function GameLogEntry({ game, onView, onDelete }) {
     }
   }
 
+  function handleKeyDown(e) {
+    if (e.target !== e.currentTarget) return
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault()
+      onView(game.id)
+    }
+  }
+
   return (
-    <div className="card game-log-entry">
+    <div
+      className="card game-log-entry"
+      role="button"
+      tabIndex={0}
+      onClick={() => onView(game.id)}
+      onKeyDown={handleKeyDown}
+    >
       <div className="game-log-entry-top">
         <div>
           <div className="game-log-date">{new Date(game.endedAt).toLocaleString()}</div>
@@ -41,10 +55,6 @@ function GameLogEntry({ game, onView, onDelete }) {
           </li>
         ))}
       </ul>
-
-      <button type="button" className="btn-link" onClick={() => onView(game.id)}>
-        View game →
-      </button>
     </div>
   )
 }
