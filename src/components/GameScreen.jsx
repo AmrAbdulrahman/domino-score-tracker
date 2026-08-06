@@ -1,7 +1,8 @@
 import PlayerCard from './PlayerCard'
-import ShareGameButton from './ShareGameButton'
 import GameMenu from './GameMenu'
+import ShareLinkDialog from './ShareLinkDialog'
 import { describeResult, rankPlayers } from '../lib/ranking'
+import { useShareGame } from '../hooks/useShareGame'
 
 export default function GameScreen({
   state,
@@ -10,11 +11,14 @@ export default function GameScreen({
   onEndGame,
   onShowHistory,
   historyCount,
+  muted,
+  onToggleSound,
 }) {
   const { players, goal, status } = state
   const hasScored = players.some((p) => p.total > 0)
   const ranked = rankPlayers(players)
   const rankById = new Map(ranked.map((p) => [p.id, p]))
+  const { shareUrl, copied, share, close } = useShareGame(state)
 
   return (
     <div className="screen game-screen">
@@ -24,10 +28,12 @@ export default function GameScreen({
           <p className="subtitle">Goal: {goal} points</p>
         </div>
         <div className="game-header-actions">
-          <ShareGameButton state={state} />
           <GameMenu
             historyCount={historyCount}
             onShowHistory={onShowHistory}
+            onShare={share}
+            muted={muted}
+            onToggleSound={onToggleSound}
             onEndGame={onEndGame}
             canEndGame={status === 'playing'}
             onNewGame={onNewGame}
@@ -54,6 +60,8 @@ export default function GameScreen({
           )
         })}
       </div>
+
+      <ShareLinkDialog shareUrl={shareUrl} copied={copied} onClose={close} />
     </div>
   )
 }

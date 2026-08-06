@@ -1,6 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
-export default function GameMenu({ historyCount, onShowHistory, onEndGame, canEndGame, onNewGame }) {
+export default function GameMenu({
+  historyCount,
+  onShowHistory,
+  onShare,
+  muted,
+  onToggleSound,
+  onEndGame,
+  canEndGame,
+  onNewGame,
+  onDeleteGame,
+}) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
 
@@ -34,9 +44,22 @@ export default function GameMenu({ historyCount, onShowHistory, onEndGame, canEn
 
       {open && (
         <div className="game-menu-dropdown" role="menu">
-          <button type="button" role="menuitem" onClick={() => choose(onShowHistory)}>
-            <span aria-hidden="true">🎲</span> Games{historyCount > 0 ? ` (${historyCount})` : ''}
-          </button>
+          {onShowHistory && (
+            <button type="button" role="menuitem" onClick={() => choose(onShowHistory)}>
+              <span aria-hidden="true">🎲</span> Games{historyCount > 0 ? ` (${historyCount})` : ''}
+            </button>
+          )}
+          {onShare && (
+            <button type="button" role="menuitem" onClick={() => choose(onShare)}>
+              <span aria-hidden="true">📤</span> Share Game
+            </button>
+          )}
+          {onToggleSound && (
+            <button type="button" role="menuitem" onClick={() => choose(onToggleSound)}>
+              <span aria-hidden="true">{muted ? '🔇' : '🔊'}</span>{' '}
+              {muted ? 'Unmute Sound' : 'Mute Sound'}
+            </button>
+          )}
           {canEndGame && (
             <button
               type="button"
@@ -47,9 +70,21 @@ export default function GameMenu({ historyCount, onShowHistory, onEndGame, canEn
               <span aria-hidden="true">🏁</span> End Game
             </button>
           )}
-          <button type="button" role="menuitem" onClick={() => choose(onNewGame)}>
-            <span aria-hidden="true">➕</span> New Game
-          </button>
+          {onNewGame && (
+            <button type="button" role="menuitem" onClick={() => choose(onNewGame)}>
+              <span aria-hidden="true">➕</span> New Game
+            </button>
+          )}
+          {onDeleteGame && (
+            <button
+              type="button"
+              role="menuitem"
+              className="game-menu-item-danger"
+              onClick={() => choose(onDeleteGame)}
+            >
+              <span aria-hidden="true">🗑</span> Delete Game
+            </button>
+          )}
         </div>
       )}
     </div>

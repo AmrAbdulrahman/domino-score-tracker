@@ -4,7 +4,6 @@ import GameScreen from './components/GameScreen'
 import GameHistoryScreen from './components/GameHistoryScreen'
 import GameDetailScreen from './components/GameDetailScreen'
 import InstallAppButton from './components/InstallAppButton'
-import SoundToggleButton from './components/SoundToggleButton'
 import UpdateAvailableBanner from './components/UpdateAvailableBanner'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
 import { usePwaUpdate } from './hooks/usePwaUpdate'
@@ -159,6 +158,8 @@ export default function App() {
         onEndGame={handleEndGame}
         onShowHistory={() => setShowHistory(true)}
         historyCount={gameHistory.length}
+        muted={muted}
+        onToggleSound={() => setMuted((m) => !m)}
       />
     )
   }
@@ -167,7 +168,6 @@ export default function App() {
     <>
       <UpdateAvailableBanner needRefresh={needRefresh} onReload={reloadForUpdate} />
       {screen}
-      <SoundToggleButton muted={muted} onToggle={() => setMuted((m) => !m)} />
       <InstallAppButton />
     </>
   )

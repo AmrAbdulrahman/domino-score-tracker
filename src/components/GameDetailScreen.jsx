@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { describeResult, formatRank, rankPlayers } from '../lib/ranking'
 import ScoreHistoryTable from './ScoreHistoryTable'
+import GameMenu from './GameMenu'
 
 export default function GameDetailScreen({ game, onBack, onDelete }) {
   const [expandedPlayer, setExpandedPlayer] = useState(null)
@@ -26,15 +27,7 @@ export default function GameDetailScreen({ game, onBack, onDelete }) {
           <button type="button" className="icon-btn" onClick={onBack} aria-label="Back" title="Back">
             <span aria-hidden="true">←</span>
           </button>
-          <button
-            type="button"
-            className="icon-btn icon-btn-danger"
-            onClick={handleDelete}
-            aria-label="Delete game"
-            title="Delete game"
-          >
-            <span aria-hidden="true">🗑</span>
-          </button>
+          <GameMenu onDeleteGame={handleDelete} />
         </div>
       </header>
 
