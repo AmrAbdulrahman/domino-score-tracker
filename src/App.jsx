@@ -3,15 +3,19 @@ import SetupScreen from './components/SetupScreen'
 import GameScreen from './components/GameScreen'
 import GameHistoryScreen from './components/GameHistoryScreen'
 import InstallAppButton from './components/InstallAppButton'
+import SoundToggleButton from './components/SoundToggleButton'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
 import { adjustScore, createHistoryEntry, createInitialState, startGame } from './lib/gameLogic'
+import { playScoreBeep } from './lib/beep'
 
 const GAME_STORAGE_KEY = 'domino-score-tracker/game'
 const HISTORY_STORAGE_KEY = 'domino-score-tracker/history'
+const SOUND_MUTED_KEY = 'domino-score-tracker/sound-muted'
 
 export default function App() {
   const [state, setState] = useLocalStorageState(GAME_STORAGE_KEY, createInitialState)
   const [gameHistory, setGameHistory] = useLocalStorageState(HISTORY_STORAGE_KEY, () => [])
+  const [muted, setMuted] = useLocalStorageState(SOUND_MUTED_KEY, () => false)
   const [showHistory, setShowHistory] = useState(false)
 
   const handleStart = useCallback(
@@ -20,8 +24,11 @@ export default function App() {
   )
 
   const handleAdjustScore = useCallback(
-    (playerId, delta) => setState((prev) => adjustScore(prev, playerId, delta)),
-    [setState],
+    (playerId, delta) => {
+      setState((prev) => adjustScore(prev, playerId, delta))
+      if (!muted && delta > 0) playScoreBeep()
+    },
+    [setState, muted],
   )
 
   const handleNewGame = useCallback(() => {
@@ -59,6 +66,7 @@ export default function App() {
   return (
     <>
       {screen}
+      <SoundToggleButton muted={muted} onToggle={() => setMuted((m) => !m)} />
       <InstallAppButton />
     </>
   )
