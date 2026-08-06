@@ -9,6 +9,9 @@ export default function GameScreen({
   onEndGame,
   onShowHistory,
   historyCount,
+  needRefresh,
+  onCheckUpdate,
+  onReloadUpdate,
 }) {
   const { players, goal, status, winnerId } = state
   const winner = players.find((p) => p.id === winnerId)
@@ -29,6 +32,9 @@ export default function GameScreen({
             onEndGame={onEndGame}
             canEndGame={status === 'playing'}
             onNewGame={onNewGame}
+            needRefresh={needRefresh}
+            onCheckUpdate={onCheckUpdate}
+            onReloadUpdate={onReloadUpdate}
           />
         </div>
       </header>

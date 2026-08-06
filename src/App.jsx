@@ -6,6 +6,7 @@ import InstallAppButton from './components/InstallAppButton'
 import SoundToggleButton from './components/SoundToggleButton'
 import UpdateAvailableBanner from './components/UpdateAvailableBanner'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
+import { usePwaUpdate } from './hooks/usePwaUpdate'
 import {
   adjustScore,
   createHistoryEntry,
@@ -25,6 +26,7 @@ export default function App() {
   const [gameHistory, setGameHistory] = useLocalStorageState(HISTORY_STORAGE_KEY, () => [])
   const [muted, setMuted] = useLocalStorageState(SOUND_MUTED_KEY, () => false)
   const [showHistory, setShowHistory] = useState(false)
+  const { needRefresh, checkForUpdate, reloadForUpdate } = usePwaUpdate()
 
   const handleStart = useCallback(
     (names, goal) => setState(startGame(names, goal)),
@@ -110,13 +112,16 @@ export default function App() {
         onEndGame={handleEndGame}
         onShowHistory={() => setShowHistory(true)}
         historyCount={gameHistory.length}
+        needRefresh={needRefresh}
+        onCheckUpdate={checkForUpdate}
+        onReloadUpdate={reloadForUpdate}
       />
     )
   }
 
   return (
     <>
-      <UpdateAvailableBanner />
+      <UpdateAvailableBanner needRefresh={needRefresh} onReload={reloadForUpdate} />
       {screen}
       <SoundToggleButton muted={muted} onToggle={() => setMuted((m) => !m)} />
       <InstallAppButton />
