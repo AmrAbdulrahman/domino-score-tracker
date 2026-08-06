@@ -3,10 +3,12 @@
 A small React app for tracking scores in a domino game.
 
 - Set up 2 to 4 players and a goal score
-- Each round, enter the points each player gained and any discount applied
-- Every player's card shows a running total and a full round-by-round history
+- Each player card has +/- buttons to add or subtract points (1-6) as the game is played
+- Every player's card shows a running total and a full score history
 - First player to reach the goal score is declared the winner
-- Game state is saved to `localStorage`, so a page refresh won't lose progress
+- Game state is saved to `localStorage`, so a page refresh won't lose progress; starting a new
+  game archives the finished one to a persistent game history log
+- Installable as a PWA — "Add to Home Screen" on mobile gives it a standalone, app-like icon
 
 ## Development
 
