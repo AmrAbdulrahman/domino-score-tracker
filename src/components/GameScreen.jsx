@@ -1,4 +1,5 @@
 import PlayerCard from './PlayerCard'
+import ShareGameButton from './ShareGameButton'
 
 export default function GameScreen({ state, onAdjustScore, onNewGame, onShowHistory, historyCount }) {
   const { players, goal, status, winnerId } = state
@@ -18,6 +19,7 @@ export default function GameScreen({ state, onAdjustScore, onNewGame, onShowHist
               Game History ({historyCount})
             </button>
           )}
+          <ShareGameButton state={state} />
           <button type="button" className="btn-secondary" onClick={onNewGame}>
             New Game
           </button>

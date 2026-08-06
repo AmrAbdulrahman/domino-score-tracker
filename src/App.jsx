@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import SetupScreen from './components/SetupScreen'
 import GameScreen from './components/GameScreen'
 import GameHistoryScreen from './components/GameHistoryScreen'
@@ -8,6 +8,7 @@ import UpdateAvailableBanner from './components/UpdateAvailableBanner'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
 import { adjustScore, createHistoryEntry, createInitialState, startGame } from './lib/gameLogic'
 import { playScoreBeep } from './lib/beep'
+import { SHARE_PARAM, tryDecodeGameState } from './lib/shareGame'
 
 const GAME_STORAGE_KEY = 'domino-score-tracker/game'
 const HISTORY_STORAGE_KEY = 'domino-score-tracker/history'
@@ -40,6 +41,36 @@ export default function App() {
     }
     setState(createInitialState())
   }, [state, setState, setGameHistory])
+
+  useEffect(() => {
+    const encoded = new URLSearchParams(window.location.search).get(SHARE_PARAM)
+    if (!encoded) return
+
+    const cleanUrl = () => window.history.replaceState({}, '', window.location.pathname)
+    const shared = tryDecodeGameState(encoded)
+
+    if (!shared) {
+      window.alert("That share link looks invalid or corrupted — couldn't load the game.")
+      cleanUrl()
+      return
+    }
+
+    if (state.status !== 'setup') {
+      const proceed = window.confirm('Load the shared game? This will replace your current game.')
+      if (!proceed) {
+        cleanUrl()
+        return
+      }
+      if (state.players.length > 0) {
+        setGameHistory((log) => [createHistoryEntry(state), ...log])
+      }
+    }
+
+    setState(shared)
+    cleanUrl()
+    // Only ever run once, against whatever game was loaded from localStorage at mount.
+    // oxlint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   let screen
   if (showHistory) {

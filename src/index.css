@@ -231,6 +231,8 @@ input[type='number']:focus {
 
 .game-header-actions {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 8px;
 }
 
@@ -546,6 +548,13 @@ input[type='number']:focus {
 .install-tip p {
   margin: 0 0 16px;
   color: var(--text);
+}
+
+.share-link-input {
+  width: 100%;
+  margin-bottom: 16px;
+  text-align: center;
+  font-size: 0.85rem;
 }
 
 /* Update available banner */
