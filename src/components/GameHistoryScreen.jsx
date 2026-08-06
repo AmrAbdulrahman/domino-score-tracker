@@ -1,4 +1,5 @@
 import { describeResult, formatRank, rankPlayers } from '../lib/ranking'
+import GameMenu from './GameMenu'
 
 function GameLogEntry({ game, onView, onDelete }) {
   const ranked = rankPlayers(game.players)
@@ -59,14 +60,29 @@ function GameLogEntry({ game, onView, onDelete }) {
   )
 }
 
-export default function GameHistoryScreen({ games, onBack, onViewGame, onDeleteGame }) {
+export default function GameHistoryScreen({
+  games,
+  onBack,
+  onViewGame,
+  onDeleteGame,
+  needRefresh,
+  onCheckUpdate,
+  onReloadUpdate,
+}) {
   return (
     <div className="screen">
       <header className="game-header">
         <h1>Games</h1>
-        <button type="button" className="icon-btn" onClick={onBack} aria-label="Back" title="Back">
-          <span aria-hidden="true">←</span>
-        </button>
+        <div className="game-header-actions">
+          <button type="button" className="icon-btn" onClick={onBack} aria-label="Back" title="Back">
+            <span aria-hidden="true">←</span>
+          </button>
+          <GameMenu
+            needRefresh={needRefresh}
+            onCheckUpdate={onCheckUpdate}
+            onReloadUpdate={onReloadUpdate}
+          />
+        </div>
       </header>
 
       {games.length === 0 ? (

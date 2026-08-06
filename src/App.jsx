@@ -139,6 +139,9 @@ export default function App() {
         }}
         onViewGame={setViewingGameId}
         onDeleteGame={handleDeleteGame}
+        needRefresh={needRefresh}
+        onCheckUpdate={checkForUpdate}
+        onReloadUpdate={reloadForUpdate}
       />
     )
   } else if (state.status === 'setup') {

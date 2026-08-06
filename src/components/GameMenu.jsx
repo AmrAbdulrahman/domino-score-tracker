@@ -1,5 +1,49 @@
 import { useEffect, useRef, useState } from 'react'
 
+function UpdateMenuItem({ needRefresh, onCheck, onReload }) {
+  const [status, setStatus] = useState('idle') // idle | checking | up-to-date | error
+
+  useEffect(() => {
+    if (needRefresh) setStatus('idle')
+  }, [needRefresh])
+
+  async function handleClick() {
+    if (needRefresh) {
+      onReload()
+      return
+    }
+
+    setStatus('checking')
+    try {
+      await onCheck()
+      // give the service worker's "waiting" event a moment to fire after update() resolves
+      setTimeout(() => {
+        setStatus((current) => (current === 'checking' ? 'up-to-date' : current))
+      }, 1200)
+    } catch {
+      setStatus('error')
+    }
+  }
+
+  let label = 'Check for Updates'
+  if (needRefresh) label = 'Reload to update'
+  else if (status === 'checking') label = 'Checking…'
+  else if (status === 'up-to-date') label = "You're up to date"
+  else if (status === 'error') label = "Couldn't check — try again"
+
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      onClick={handleClick}
+      disabled={status === 'checking'}
+      className={needRefresh ? 'game-menu-item-highlight' : undefined}
+    >
+      <span aria-hidden="true">🔄</span> {label}
+    </button>
+  )
+}
+
 export default function GameMenu({
   historyCount,
   onShowHistory,
@@ -10,6 +54,9 @@ export default function GameMenu({
   canEndGame,
   onNewGame,
   onDeleteGame,
+  needRefresh,
+  onCheckUpdate,
+  onReloadUpdate,
 }) {
   const [open, setOpen] = useState(false)
   const menuRef = useRef(null)
@@ -84,6 +131,9 @@ export default function GameMenu({
             >
               <span aria-hidden="true">🗑</span> Delete Game
             </button>
+          )}
+          {onCheckUpdate && (
+            <UpdateMenuItem needRefresh={needRefresh} onCheck={onCheckUpdate} onReload={onReloadUpdate} />
           )}
         </div>
       )}
