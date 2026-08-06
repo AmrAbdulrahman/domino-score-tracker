@@ -81,12 +81,14 @@ export default function GameMenu({
     <div className="game-menu" ref={menuRef}>
       <button
         type="button"
-        className="btn-secondary"
+        className="icon-btn"
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="true"
         aria-expanded={open}
+        aria-label="Menu"
+        title="Menu"
       >
-        <span aria-hidden="true">☰</span> Menu
+        <span aria-hidden="true">☰</span>
       </button>
 
       {open && (

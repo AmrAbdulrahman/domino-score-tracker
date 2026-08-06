@@ -254,14 +254,14 @@ input[type='number']:focus {
   height: 44px;
   flex-shrink: 0;
   padding: 0;
-  border: 1px solid var(--border);
+  border: none;
   border-radius: 10px;
   background: var(--surface-muted);
   color: var(--text);
   font-size: 1.2rem;
   line-height: 1;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
 
 .icon-btn:hover {
@@ -281,7 +281,6 @@ input[type='number']:focus {
 
 .icon-btn-danger:hover {
   background: var(--danger);
-  border-color: var(--danger);
   color: var(--accent-contrast);
 }
 
