@@ -62,7 +62,6 @@ function GameLogEntry({ game, onView, onDelete }) {
 
 export default function GameHistoryScreen({
   games,
-  onBack,
   onViewGame,
   onDeleteGame,
   needRefresh,
@@ -74,9 +73,6 @@ export default function GameHistoryScreen({
       <header className="game-header">
         <h1>Games</h1>
         <div className="game-header-actions">
-          <button type="button" className="icon-btn" onClick={onBack} aria-label="Back" title="Back">
-            <span aria-hidden="true">←</span>
-          </button>
           <GameMenu
             needRefresh={needRefresh}
             onCheckUpdate={onCheckUpdate}

@@ -311,6 +311,12 @@ input[type='number']:focus {
   margin-bottom: 20px;
 }
 
+.game-header-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .game-header-actions {
   display: flex;
   flex-wrap: wrap;

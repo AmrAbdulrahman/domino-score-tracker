@@ -17,16 +17,18 @@ export default function GameDetailScreen({ game, onBack, onDelete }) {
   return (
     <div className="screen">
       <header className="game-header">
-        <div>
-          <h1>Game Details</h1>
-          <p className="subtitle">
-            {new Date(game.endedAt).toLocaleString()} · Goal {game.goal} points
-          </p>
-        </div>
-        <div className="game-header-actions">
+        <div className="game-header-title-row">
           <button type="button" className="icon-btn" onClick={onBack} aria-label="Back" title="Back">
             <span aria-hidden="true">←</span>
           </button>
+          <div>
+            <h1>Game Details</h1>
+            <p className="subtitle">
+              {new Date(game.endedAt).toLocaleString()} · Goal {game.goal} points
+            </p>
+          </div>
+        </div>
+        <div className="game-header-actions">
           <GameMenu onDeleteGame={handleDelete} />
         </div>
       </header>

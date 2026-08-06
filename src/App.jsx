@@ -133,10 +133,6 @@ export default function App() {
     screen = (
       <GameHistoryScreen
         games={gameHistory}
-        onBack={() => {
-          setShowHistory(false)
-          setViewingGameId(null)
-        }}
         onViewGame={setViewingGameId}
         onDeleteGame={handleDeleteGame}
         needRefresh={needRefresh}
