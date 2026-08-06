@@ -1,7 +1,15 @@
 import { useState } from 'react'
 import { MAX_PLAYERS, MIN_PLAYERS } from '../lib/gameLogic'
+import UpdateCheckButton from './UpdateCheckButton'
 
-export default function SetupScreen({ onStart, onShowHistory, historyCount }) {
+export default function SetupScreen({
+  onStart,
+  onShowHistory,
+  historyCount,
+  needRefresh,
+  onCheckUpdate,
+  onReloadUpdate,
+}) {
   const [playerCount, setPlayerCount] = useState(2)
   const [names, setNames] = useState(['', ''])
   const [goal, setGoal] = useState('100')
@@ -50,9 +58,12 @@ export default function SetupScreen({ onStart, onShowHistory, historyCount }) {
       <div className="card setup-card">
         <div className="setup-card-header">
           <h1>Domino Score Tracker</h1>
-          <button type="button" className="btn-link" onClick={onShowHistory}>
-            Games{historyCount > 0 ? ` (${historyCount})` : ''}
-          </button>
+          <div className="setup-card-header-actions">
+            <UpdateCheckButton needRefresh={needRefresh} onCheck={onCheckUpdate} onReload={onReloadUpdate} />
+            <button type="button" className="btn-link" onClick={onShowHistory}>
+              Games{historyCount > 0 ? ` (${historyCount})` : ''}
+            </button>
+          </div>
         </div>
         <p className="subtitle">Set up your players and the goal score to start a game.</p>
 

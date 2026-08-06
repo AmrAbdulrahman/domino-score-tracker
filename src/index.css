@@ -43,10 +43,13 @@
 body {
   margin: 0;
   min-height: 100vh;
+  padding-top: max(20px, env(safe-area-inset-top));
 }
 
 #root {
-  min-height: 100vh;
+  min-height: calc(100vh - max(20px, env(safe-area-inset-top)));
+  display: flex;
+  flex-direction: column;
 }
 
 h1 {
@@ -67,7 +70,9 @@ h2 {
 }
 
 .screen {
+  flex: 1;
   max-width: 960px;
+  width: 100%;
   margin: 0 auto;
   padding: 32px 20px 60px;
 }
@@ -85,7 +90,6 @@ h2 {
 .setup-screen {
   display: flex;
   align-items: center;
-  min-height: 100vh;
   padding-top: 20px;
   padding-bottom: 20px;
 }
@@ -97,9 +101,15 @@ h2 {
 
 .setup-card-header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.setup-card-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .field-group {
@@ -200,6 +210,12 @@ input[type='number']:focus {
   background: var(--border);
 }
 
+.btn-primary:disabled,
+.btn-secondary:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
 .btn-block {
   width: 100%;
 }
@@ -240,21 +256,6 @@ input[type='number']:focus {
   position: relative;
 }
 
-.game-menu-trigger {
-  position: relative;
-}
-
-.game-menu-badge {
-  position: absolute;
-  top: -3px;
-  right: -3px;
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--danger);
-  border: 2px solid var(--bg);
-}
-
 .game-menu-dropdown {
   position: absolute;
   top: calc(100% + 6px);
@@ -287,21 +288,8 @@ input[type='number']:focus {
   background: var(--surface-muted);
 }
 
-.game-menu-dropdown button:disabled {
-  color: var(--text-muted);
-  cursor: default;
-}
-
-.game-menu-dropdown button:disabled:hover {
-  background: none;
-}
-
 .game-menu-item-danger {
   color: var(--danger);
-}
-
-.game-menu-item-highlight {
-  color: var(--accent);
 }
 
 .winner-banner {

@@ -1,6 +1,7 @@
 import PlayerCard from './PlayerCard'
 import ShareGameButton from './ShareGameButton'
 import GameMenu from './GameMenu'
+import UpdateCheckButton from './UpdateCheckButton'
 
 export default function GameScreen({
   state,
@@ -25,6 +26,7 @@ export default function GameScreen({
           <p className="subtitle">Goal: {goal} points</p>
         </div>
         <div className="game-header-actions">
+          <UpdateCheckButton needRefresh={needRefresh} onCheck={onCheckUpdate} onReload={onReloadUpdate} />
           <ShareGameButton state={state} />
           <GameMenu
             historyCount={historyCount}
@@ -32,9 +34,6 @@ export default function GameScreen({
             onEndGame={onEndGame}
             canEndGame={status === 'playing'}
             onNewGame={onNewGame}
-            needRefresh={needRefresh}
-            onCheckUpdate={onCheckUpdate}
-            onReloadUpdate={onReloadUpdate}
           />
         </div>
       </header>
