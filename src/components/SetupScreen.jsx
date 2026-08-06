@@ -61,7 +61,7 @@ export default function SetupScreen({
           <div className="setup-card-header-actions">
             <UpdateCheckButton needRefresh={needRefresh} onCheck={onCheckUpdate} onReload={onReloadUpdate} />
             <button type="button" className="btn-link" onClick={onShowHistory}>
-              Games{historyCount > 0 ? ` (${historyCount})` : ''}
+              <span aria-hidden="true">🎲</span> Games{historyCount > 0 ? ` (${historyCount})` : ''}
             </button>
           </div>
         </div>

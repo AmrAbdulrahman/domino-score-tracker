@@ -35,7 +35,7 @@ export default function GameMenu({ historyCount, onShowHistory, onEndGame, canEn
       {open && (
         <div className="game-menu-dropdown" role="menu">
           <button type="button" role="menuitem" onClick={() => choose(onShowHistory)}>
-            Games{historyCount > 0 ? ` (${historyCount})` : ''}
+            <span aria-hidden="true">🎲</span> Games{historyCount > 0 ? ` (${historyCount})` : ''}
           </button>
           {canEndGame && (
             <button
@@ -44,11 +44,11 @@ export default function GameMenu({ historyCount, onShowHistory, onEndGame, canEn
               className="game-menu-item-danger"
               onClick={() => choose(onEndGame)}
             >
-              End Game
+              <span aria-hidden="true">🏁</span> End Game
             </button>
           )}
           <button type="button" role="menuitem" onClick={() => choose(onNewGame)}>
-            New Game
+            <span aria-hidden="true">➕</span> New Game
           </button>
         </div>
       )}

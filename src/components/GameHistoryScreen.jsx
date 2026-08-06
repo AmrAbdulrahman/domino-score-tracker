@@ -23,12 +23,12 @@ function GameLogEntry({ game, onView, onDelete }) {
         </div>
         <button
           type="button"
-          className="game-log-delete"
+          className="icon-btn icon-btn-sm icon-btn-danger"
           onClick={handleDelete}
           aria-label="Delete game"
           title="Delete game"
         >
-          🗑
+          <span aria-hidden="true">🗑</span>
         </button>
       </div>
 
@@ -54,8 +54,8 @@ export default function GameHistoryScreen({ games, onBack, onViewGame, onDeleteG
     <div className="screen">
       <header className="game-header">
         <h1>Games</h1>
-        <button type="button" className="btn-secondary" onClick={onBack}>
-          Back
+        <button type="button" className="icon-btn" onClick={onBack} aria-label="Back" title="Back">
+          <span aria-hidden="true">←</span>
         </button>
       </header>
 

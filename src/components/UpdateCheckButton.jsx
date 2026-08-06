@@ -38,7 +38,7 @@ export default function UpdateCheckButton({ needRefresh, onCheck, onReload }) {
       onClick={handleClick}
       disabled={status === 'checking'}
     >
-      {label}
+      <span aria-hidden="true">🔄</span> {label}
     </button>
   )
 }

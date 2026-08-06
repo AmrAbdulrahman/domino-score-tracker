@@ -34,7 +34,7 @@ export default function ShareGameButton({ state }) {
   return (
     <>
       <button type="button" className="btn-secondary" onClick={handleShare}>
-        Share Game
+        <span aria-hidden="true">📤</span> Share
       </button>
 
       {shareUrl && (

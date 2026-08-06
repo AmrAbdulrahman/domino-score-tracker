@@ -5,7 +5,7 @@ export default function UpdateAvailableBanner({ needRefresh, onReload }) {
     <div className="update-banner">
       <span>A new version of Domino Score Tracker is available.</span>
       <button type="button" className="update-banner-button" onClick={onReload}>
-        Reload to update
+        <span aria-hidden="true">🔄</span> Reload to update
       </button>
     </div>
   )

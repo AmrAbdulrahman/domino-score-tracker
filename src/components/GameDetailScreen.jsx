@@ -23,11 +23,17 @@ export default function GameDetailScreen({ game, onBack, onDelete }) {
           </p>
         </div>
         <div className="game-header-actions">
-          <button type="button" className="btn-secondary" onClick={onBack}>
-            Back
+          <button type="button" className="icon-btn" onClick={onBack} aria-label="Back" title="Back">
+            <span aria-hidden="true">←</span>
           </button>
-          <button type="button" className="btn-danger" onClick={handleDelete}>
-            Delete Game
+          <button
+            type="button"
+            className="icon-btn icon-btn-danger"
+            onClick={handleDelete}
+            aria-label="Delete game"
+            title="Delete game"
+          >
+            <span aria-hidden="true">🗑</span>
           </button>
         </div>
       </header>
