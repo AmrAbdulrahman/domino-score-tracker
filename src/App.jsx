@@ -4,6 +4,7 @@ import GameScreen from './components/GameScreen'
 import GameHistoryScreen from './components/GameHistoryScreen'
 import InstallAppButton from './components/InstallAppButton'
 import SoundToggleButton from './components/SoundToggleButton'
+import UpdateAvailableBanner from './components/UpdateAvailableBanner'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
 import { adjustScore, createHistoryEntry, createInitialState, startGame } from './lib/gameLogic'
 import { playScoreBeep } from './lib/beep'
@@ -65,6 +66,7 @@ export default function App() {
 
   return (
     <>
+      <UpdateAvailableBanner />
       {screen}
       <SoundToggleButton muted={muted} onToggle={() => setMuted((m) => !m)} />
       <InstallAppButton />

@@ -7,8 +7,12 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: 'prompt',
+      injectRegister: null,
       includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      workbox: {
+        clientsClaim: true,
+      },
       manifest: {
         name: 'Domino Score Tracker',
         short_name: 'Domino Score',
