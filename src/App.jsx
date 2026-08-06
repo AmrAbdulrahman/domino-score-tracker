@@ -39,8 +39,11 @@ export default function App() {
   )
 
   const handleStart = useCallback(
-    (names, goal) => setState(startGame(names, goal)),
-    [setState],
+    (names, goal) => {
+      setState(startGame(names, goal))
+      checkForUpdate()
+    },
+    [setState, checkForUpdate],
   )
 
   const handleAdjustScore = useCallback(
@@ -71,6 +74,10 @@ export default function App() {
     }
     setState(createInitialState())
   }, [state, setState, setGameHistory])
+
+  useEffect(() => {
+    if (showHistory) checkForUpdate()
+  }, [showHistory, checkForUpdate])
 
   const hasArchivedFinishedGameRef = useRef(false)
 
