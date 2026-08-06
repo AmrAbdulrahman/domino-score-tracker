@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { MAX_PLAYERS, MIN_PLAYERS } from '../lib/gameLogic'
+import { GOAL_PRESETS, MAX_PLAYERS, MIN_PLAYERS } from '../lib/gameLogic'
 import UpdateCheckButton from './UpdateCheckButton'
 
 export default function SetupScreen({
@@ -12,7 +12,7 @@ export default function SetupScreen({
 }) {
   const [playerCount, setPlayerCount] = useState(2)
   const [names, setNames] = useState(['', ''])
-  const [goal, setGoal] = useState('100')
+  const [goal, setGoal] = useState('51')
   const [error, setError] = useState('')
 
   function handlePlayerCountChange(count) {
@@ -105,9 +105,24 @@ export default function SetupScreen({
 
           <fieldset className="field-group">
             <legend>Goal points</legend>
+            <div className="goal-presets">
+              {GOAL_PRESETS.map((value) => (
+                <button
+                  key={value}
+                  type="button"
+                  className={`goal-preset-option ${Number(goal) === value ? 'active' : ''}`}
+                  onClick={() => setGoal(String(value))}
+                >
+                  {value}
+                </button>
+              ))}
+            </div>
+            <label className="field-sublabel" htmlFor="goal">
+              Or set a custom value
+            </label>
             <input
               id="goal"
-              aria-label="Goal points"
+              aria-label="Custom goal points"
               type="number"
               min="1"
               inputMode="numeric"

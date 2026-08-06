@@ -1,11 +1,13 @@
 import { useState } from 'react'
 import { PIP_VALUES } from '../lib/gameLogic'
+import { formatRank } from '../lib/ranking'
 import ScoreHistoryTable from './ScoreHistoryTable'
 
-export default function PlayerCard({ player, goal, isWinner, isLeader, disabled, onAdjust }) {
+export default function PlayerCard({ player, goal, rank, isTied, isWinner, disabled, onAdjust }) {
   const [showHistory, setShowHistory] = useState(false)
   const [picker, setPicker] = useState(null) // null | 'add' | 'subtract'
-  const progress = Math.min(100, Math.round((player.total / goal) * 100))
+  const progress = Math.min(100, Math.max(0, Math.round((player.total / goal) * 100)))
+  const gradientSize = progress > 0 ? (100 / progress) * 100 : 100
 
   function togglePicker(mode) {
     setPicker((current) => (current === mode ? null : mode))
@@ -20,17 +22,19 @@ export default function PlayerCard({ player, goal, isWinner, isLeader, disabled,
     <div className={`player-card ${isWinner ? 'is-winner' : ''}`}>
       <div className="player-card-header">
         <div className="player-name">
+          {rank && <span className="badge badge-rank">{formatRank(rank)}</span>}
           {player.name}
           {isWinner && <span className="badge badge-winner">Winner</span>}
-          {!isWinner && isLeader && player.history.length > 0 && (
-            <span className="badge badge-leader">Leading</span>
-          )}
+          {isTied && <span className="badge badge-tie">Tie</span>}
         </div>
         <div className="player-total">{player.total}</div>
       </div>
 
       <div className="progress-track" aria-hidden="true">
-        <div className="progress-fill" style={{ width: `${progress}%` }} />
+        <div
+          className="progress-fill"
+          style={{ width: `${progress}%`, backgroundSize: `${gradientSize}% 100%` }}
+        />
       </div>
       <div className="progress-label">
         {player.total} / {goal} points

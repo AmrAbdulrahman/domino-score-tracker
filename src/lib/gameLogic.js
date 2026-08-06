@@ -1,6 +1,7 @@
 export const MIN_PLAYERS = 2
 export const MAX_PLAYERS = 4
 export const PIP_VALUES = [1, 2, 3, 4, 5, 6]
+export const GOAL_PRESETS = [21, 31, 41, 51, 61, 71, 81, 91]
 
 export function createInitialState() {
   return {

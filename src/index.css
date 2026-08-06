@@ -157,6 +157,38 @@ h2 {
   gap: 10px;
 }
 
+.goal-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.goal-preset-option {
+  padding: 8px 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-muted);
+  color: var(--text);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.goal-preset-option.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+  font-weight: 600;
+}
+
+.field-sublabel {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
 input[type='text'],
 input[type='number'] {
   width: 100%;
@@ -214,6 +246,22 @@ input[type='number']:focus {
 .btn-secondary:disabled {
   opacity: 0.6;
   cursor: default;
+}
+
+.btn-danger {
+  border: none;
+  border-radius: 10px;
+  padding: 12px 18px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--danger);
+  color: var(--accent-contrast);
+  transition: opacity 0.15s;
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
 }
 
 .btn-block {
@@ -360,7 +408,12 @@ input[type='number']:focus {
   color: #241f1a;
 }
 
-.badge-leader {
+.badge-tie {
+  background: var(--winner);
+  color: #241f1a;
+}
+
+.badge-rank {
   background: var(--surface-muted);
   color: var(--text-muted);
   border: 1px solid var(--border);
@@ -376,7 +429,9 @@ input[type='number']:focus {
 
 .progress-fill {
   height: 100%;
-  background: var(--accent);
+  background-image: linear-gradient(90deg, #eab308, #16a34a);
+  background-repeat: no-repeat;
+  background-position: left center;
   transition: width 0.3s ease;
 }
 
@@ -510,6 +565,13 @@ input[type='number']:focus {
   text-align: left;
 }
 
+.game-log-entry-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
 .game-log-date {
   font-weight: 600;
 }
@@ -520,12 +582,37 @@ input[type='number']:focus {
   margin: 4px 0 12px;
 }
 
+.game-log-delete {
+  border: none;
+  background: none;
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.game-log-delete:hover {
+  color: var(--danger);
+  background: var(--surface-muted);
+}
+
 .game-log-players {
   list-style: none;
-  margin: 0;
+  margin: 0 0 12px;
   padding: 0;
-  display: grid;
-  gap: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+}
+
+.game-log-players li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
 }
 
 /* Install app button */

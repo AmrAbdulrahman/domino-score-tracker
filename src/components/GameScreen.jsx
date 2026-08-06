@@ -2,6 +2,7 @@ import PlayerCard from './PlayerCard'
 import ShareGameButton from './ShareGameButton'
 import GameMenu from './GameMenu'
 import UpdateCheckButton from './UpdateCheckButton'
+import { describeResult, rankPlayers } from '../lib/ranking'
 
 export default function GameScreen({
   state,
@@ -14,9 +15,10 @@ export default function GameScreen({
   onCheckUpdate,
   onReloadUpdate,
 }) {
-  const { players, goal, status, winnerId } = state
-  const winner = players.find((p) => p.id === winnerId)
-  const leaderTotal = Math.max(...players.map((p) => p.total))
+  const { players, goal, status } = state
+  const hasScored = players.some((p) => p.total > 0)
+  const ranked = rankPlayers(players)
+  const rankById = new Map(ranked.map((p) => [p.id, p]))
 
   return (
     <div className="screen game-screen">
@@ -38,24 +40,24 @@ export default function GameScreen({
         </div>
       </header>
 
-      {status === 'finished' && winner && (
-        <div className="winner-banner">
-          🏆 {winner.name} wins with {winner.total} points!
-        </div>
-      )}
+      {status === 'finished' && <div className="winner-banner">{describeResult(ranked)}</div>}
 
       <div className="player-grid">
-        {players.map((player) => (
-          <PlayerCard
-            key={player.id}
-            player={player}
-            goal={goal}
-            isWinner={player.id === winnerId}
-            isLeader={player.total === leaderTotal && leaderTotal > 0}
-            disabled={status === 'finished'}
-            onAdjust={(delta) => onAdjustScore(player.id, delta)}
-          />
-        ))}
+        {players.map((player) => {
+          const { rank, isTied } = rankById.get(player.id)
+          return (
+            <PlayerCard
+              key={player.id}
+              player={player}
+              goal={goal}
+              rank={hasScored ? rank : null}
+              isTied={hasScored && isTied}
+              isWinner={status === 'finished' && rank === 1 && !isTied}
+              disabled={status === 'finished'}
+              onAdjust={(delta) => onAdjustScore(player.id, delta)}
+            />
+          )
+        })}
       </div>
     </div>
   )

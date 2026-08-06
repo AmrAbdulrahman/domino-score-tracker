@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import SetupScreen from './components/SetupScreen'
 import GameScreen from './components/GameScreen'
 import GameHistoryScreen from './components/GameHistoryScreen'
+import GameDetailScreen from './components/GameDetailScreen'
 import InstallAppButton from './components/InstallAppButton'
 import SoundToggleButton from './components/SoundToggleButton'
 import UpdateAvailableBanner from './components/UpdateAvailableBanner'
@@ -26,7 +27,16 @@ export default function App() {
   const [gameHistory, setGameHistory] = useLocalStorageState(HISTORY_STORAGE_KEY, () => [])
   const [muted, setMuted] = useLocalStorageState(SOUND_MUTED_KEY, () => false)
   const [showHistory, setShowHistory] = useState(false)
+  const [viewingGameId, setViewingGameId] = useState(null)
   const { needRefresh, checkForUpdate, reloadForUpdate } = usePwaUpdate()
+
+  const handleDeleteGame = useCallback(
+    (id) => {
+      setGameHistory((log) => log.filter((g) => g.id !== id))
+      setViewingGameId((current) => (current === id ? null : current))
+    },
+    [setGameHistory],
+  )
 
   const handleStart = useCallback(
     (names, goal) => setState(startGame(names, goal)),
@@ -106,9 +116,25 @@ export default function App() {
     // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const viewingGame = viewingGameId ? gameHistory.find((g) => g.id === viewingGameId) : null
+
   let screen
-  if (showHistory) {
-    screen = <GameHistoryScreen games={gameHistory} onBack={() => setShowHistory(false)} />
+  if (showHistory && viewingGame) {
+    screen = (
+      <GameDetailScreen game={viewingGame} onBack={() => setViewingGameId(null)} onDelete={handleDeleteGame} />
+    )
+  } else if (showHistory) {
+    screen = (
+      <GameHistoryScreen
+        games={gameHistory}
+        onBack={() => {
+          setShowHistory(false)
+          setViewingGameId(null)
+        }}
+        onViewGame={setViewingGameId}
+        onDeleteGame={handleDeleteGame}
+      />
+    )
   } else if (state.status === 'setup') {
     screen = (
       <SetupScreen
