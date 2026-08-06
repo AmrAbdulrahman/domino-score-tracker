@@ -48,3 +48,20 @@ export function adjustScore(state, playerId, delta) {
     winnerId: winner ? winner.id : null,
   }
 }
+
+export function createHistoryEntry(state) {
+  const winner = state.players.find((p) => p.id === state.winnerId)
+
+  return {
+    id: `g${Date.now()}`,
+    endedAt: new Date().toISOString(),
+    status: state.status === 'finished' ? 'finished' : 'abandoned',
+    goal: state.goal,
+    winnerName: winner ? winner.name : null,
+    players: state.players.map((p) => ({
+      name: p.name,
+      total: p.total,
+      history: p.history,
+    })),
+  }
+}

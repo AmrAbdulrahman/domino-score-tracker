@@ -1,13 +1,17 @@
-import { useCallback } from 'react'
+import { useCallback, useState } from 'react'
 import SetupScreen from './components/SetupScreen'
 import GameScreen from './components/GameScreen'
+import GameHistoryScreen from './components/GameHistoryScreen'
 import { useLocalStorageState } from './hooks/useLocalStorageState'
-import { adjustScore, createInitialState, startGame } from './lib/gameLogic'
+import { adjustScore, createHistoryEntry, createInitialState, startGame } from './lib/gameLogic'
 
-const STORAGE_KEY = 'domino-score-tracker/game'
+const GAME_STORAGE_KEY = 'domino-score-tracker/game'
+const HISTORY_STORAGE_KEY = 'domino-score-tracker/history'
 
 export default function App() {
-  const [state, setState] = useLocalStorageState(STORAGE_KEY, createInitialState)
+  const [state, setState] = useLocalStorageState(GAME_STORAGE_KEY, createInitialState)
+  const [gameHistory, setGameHistory] = useLocalStorageState(HISTORY_STORAGE_KEY, () => [])
+  const [showHistory, setShowHistory] = useState(false)
 
   const handleStart = useCallback(
     (names, goal) => setState(startGame(names, goal)),
@@ -20,16 +24,35 @@ export default function App() {
   )
 
   const handleNewGame = useCallback(() => {
-    if (window.confirm('Start a new game? This will clear the current scores.')) {
-      setState(createInitialState())
+    if (!window.confirm('Start a new game? This will clear the current scores.')) return
+
+    if (state.players.length > 0) {
+      setGameHistory((log) => [createHistoryEntry(state), ...log])
     }
-  }, [setState])
+    setState(createInitialState())
+  }, [state, setState, setGameHistory])
+
+  if (showHistory) {
+    return <GameHistoryScreen games={gameHistory} onBack={() => setShowHistory(false)} />
+  }
 
   if (state.status === 'setup') {
-    return <SetupScreen onStart={handleStart} />
+    return (
+      <SetupScreen
+        onStart={handleStart}
+        onShowHistory={() => setShowHistory(true)}
+        historyCount={gameHistory.length}
+      />
+    )
   }
 
   return (
-    <GameScreen state={state} onAdjustScore={handleAdjustScore} onNewGame={handleNewGame} />
+    <GameScreen
+      state={state}
+      onAdjustScore={handleAdjustScore}
+      onNewGame={handleNewGame}
+      onShowHistory={() => setShowHistory(true)}
+      historyCount={gameHistory.length}
+    />
   )
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { PIP_VALUES } from '../lib/gameLogic'
+import ScoreHistoryTable from './ScoreHistoryTable'
 
 export default function PlayerCard({ player, goal, isWinner, isLeader, disabled, onAdjust }) {
   const [showHistory, setShowHistory] = useState(false)
@@ -83,28 +84,7 @@ export default function PlayerCard({ player, goal, isWinner, isLeader, disabled,
         {player.history.length > 0 ? ` (${player.history.length})` : ''}
       </button>
 
-      {showHistory && (
-        <table className="history-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Change</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {player.history.map((entry, index) => (
-              <tr key={index}>
-                <td>{index + 1}</td>
-                <td className={entry.delta < 0 ? 'negative' : 'positive'}>
-                  {entry.delta > 0 ? `+${entry.delta}` : entry.delta}
-                </td>
-                <td>{entry.total}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      {showHistory && <ScoreHistoryTable history={player.history} />}
     </div>
   )
 }

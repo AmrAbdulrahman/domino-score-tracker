@@ -95,6 +95,13 @@ h2 {
   margin: 0 auto;
 }
 
+.setup-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+}
+
 .field-group {
   border: none;
   margin: 0 0 20px;
@@ -220,6 +227,11 @@ input[type='number']:focus {
   align-items: flex-start;
   gap: 12px;
   margin-bottom: 20px;
+}
+
+.game-header-actions {
+  display: flex;
+  gap: 8px;
 }
 
 .winner-banner {
@@ -427,4 +439,33 @@ input[type='number']:focus {
   background: var(--danger);
   border-color: var(--danger);
   color: var(--accent-contrast);
+}
+
+/* Game history log */
+
+.game-log-list {
+  display: grid;
+  gap: 16px;
+}
+
+.game-log-entry {
+  text-align: left;
+}
+
+.game-log-date {
+  font-weight: 600;
+}
+
+.game-log-meta {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin: 4px 0 12px;
+}
+
+.game-log-players {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
 }

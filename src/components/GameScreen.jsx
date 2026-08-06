@@ -1,6 +1,6 @@
 import PlayerCard from './PlayerCard'
 
-export default function GameScreen({ state, onAdjustScore, onNewGame }) {
+export default function GameScreen({ state, onAdjustScore, onNewGame, onShowHistory, historyCount }) {
   const { players, goal, status, winnerId } = state
   const winner = players.find((p) => p.id === winnerId)
   const leaderTotal = Math.max(...players.map((p) => p.total))
@@ -12,9 +12,16 @@ export default function GameScreen({ state, onAdjustScore, onNewGame }) {
           <h1>Domino Score Tracker</h1>
           <p className="subtitle">Goal: {goal} points</p>
         </div>
-        <button type="button" className="btn-secondary" onClick={onNewGame}>
-          New Game
-        </button>
+        <div className="game-header-actions">
+          {historyCount > 0 && (
+            <button type="button" className="btn-secondary" onClick={onShowHistory}>
+              Game History ({historyCount})
+            </button>
+          )}
+          <button type="button" className="btn-secondary" onClick={onNewGame}>
+            New Game
+          </button>
+        </div>
       </header>
 
       {status === 'finished' && winner && (
