@@ -9,7 +9,7 @@ export default function GameDetailScreen({ game, onBack, onDelete }) {
   const hasScored = game.players.some((p) => p.total > 0)
 
   function handleDelete() {
-    if (window.confirm('Delete this game? This cannot be undone.')) {
+    if (window.confirm('Remove this game? This cannot be undone.')) {
       onDelete(game.id)
     }
   }

@@ -613,13 +613,6 @@ input[type='number']:focus {
   outline-offset: 2px;
 }
 
-.game-log-entry-top {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 12px;
-}
-
 .game-log-date {
   font-weight: 600;
 }

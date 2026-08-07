@@ -131,7 +131,7 @@ export default function GameMenu({
               className="game-menu-item-danger"
               onClick={() => choose(onDeleteGame)}
             >
-              <span aria-hidden="true">🗑</span> Delete Game
+              <span aria-hidden="true">🗑</span> Remove Game
             </button>
           )}
           {onCheckUpdate && (

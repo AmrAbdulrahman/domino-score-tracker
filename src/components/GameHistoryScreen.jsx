@@ -1,16 +1,9 @@
 import { describeResult, formatRank, rankPlayers } from '../lib/ranking'
 import GameMenu from './GameMenu'
 
-function GameLogEntry({ game, onView, onDelete }) {
+function GameLogEntry({ game, onView }) {
   const ranked = rankPlayers(game.players)
   const hasScored = game.players.some((p) => p.total > 0)
-
-  function handleDelete(e) {
-    e.stopPropagation()
-    if (window.confirm('Delete this game? This cannot be undone.')) {
-      onDelete(game.id)
-    }
-  }
 
   function handleKeyDown(e) {
     if (e.target !== e.currentTarget) return
@@ -28,23 +21,10 @@ function GameLogEntry({ game, onView, onDelete }) {
       onClick={() => onView(game.id)}
       onKeyDown={handleKeyDown}
     >
-      <div className="game-log-entry-top">
-        <div>
-          <div className="game-log-date">{new Date(game.endedAt).toLocaleString()}</div>
-          <div className="game-log-meta">
-            Goal {game.goal} points ·{' '}
-            {game.status === 'finished' ? describeResult(ranked) : 'Ended without a winner'}
-          </div>
-        </div>
-        <button
-          type="button"
-          className="icon-btn icon-btn-sm icon-btn-danger"
-          onClick={handleDelete}
-          aria-label="Delete game"
-          title="Delete game"
-        >
-          <span aria-hidden="true">🗑</span>
-        </button>
+      <div className="game-log-date">{new Date(game.endedAt).toLocaleString()}</div>
+      <div className="game-log-meta">
+        Goal {game.goal} points ·{' '}
+        {game.status === 'finished' ? describeResult(ranked) : 'Ended without a winner'}
       </div>
 
       <ul className="game-log-players">
@@ -63,7 +43,7 @@ function GameLogEntry({ game, onView, onDelete }) {
 export default function GameHistoryScreen({
   games,
   onViewGame,
-  onDeleteGame,
+  onNewGame,
   needRefresh,
   onCheckUpdate,
   onReloadUpdate,
@@ -74,6 +54,7 @@ export default function GameHistoryScreen({
         <h1>Games</h1>
         <div className="game-header-actions">
           <GameMenu
+            onNewGame={onNewGame}
             needRefresh={needRefresh}
             onCheckUpdate={onCheckUpdate}
             onReloadUpdate={onReloadUpdate}
@@ -86,7 +67,7 @@ export default function GameHistoryScreen({
       ) : (
         <div className="game-log-list">
           {games.map((game) => (
-            <GameLogEntry key={game.id} game={game} onView={onViewGame} onDelete={onDeleteGame} />
+            <GameLogEntry key={game.id} game={game} onView={onViewGame} />
           ))}
         </div>
       )}

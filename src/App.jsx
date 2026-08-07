@@ -66,12 +66,13 @@ export default function App() {
   }, [state, setState])
 
   const handleNewGame = useCallback(() => {
-    if (!window.confirm('Start a new game? This will clear the current scores.')) return
+    if (!window.confirm('Start a new game? This will clear the current scores.')) return false
 
     if (state.players.length > 0 && !state.archived) {
       setGameHistory((log) => [createHistoryEntry(state), ...log])
     }
     setState(createInitialState())
+    return true
   }, [state, setState, setGameHistory])
 
   useEffect(() => {
@@ -134,7 +135,12 @@ export default function App() {
       <GameHistoryScreen
         games={gameHistory}
         onViewGame={setViewingGameId}
-        onDeleteGame={handleDeleteGame}
+        onNewGame={() => {
+          if (handleNewGame()) {
+            setShowHistory(false)
+            setViewingGameId(null)
+          }
+        }}
         needRefresh={needRefresh}
         onCheckUpdate={checkForUpdate}
         onReloadUpdate={reloadForUpdate}
